@@ -1,0 +1,14 @@
+mailing:
+  repository-mode: jpa
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mailing
+    username: mailing
+    password: mailing
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    listener:
+      auto-startup: true
