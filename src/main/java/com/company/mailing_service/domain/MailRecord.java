@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class MailRecord {
     UUID id;
     String idempotencyKey;
