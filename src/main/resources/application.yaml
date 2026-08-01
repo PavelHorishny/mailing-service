@@ -9,6 +9,9 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: false
+  kafka:
+    consumer:
+      group-id: mailing-service
 
 mailing:
   repository-mode: mock
