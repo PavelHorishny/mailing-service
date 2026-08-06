@@ -6,8 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/mailing
     username: mailing
     password: mailing
-  flyway:
+  liquibase:
     enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
   kafka:
     bootstrap-servers: localhost:9092
     listener:

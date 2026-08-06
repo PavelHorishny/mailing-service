@@ -7,11 +7,20 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
-  flyway:
+  liquibase:
     enabled: false
   kafka:
     consumer:
       group-id: mailing-service
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.trusted.packages: com.company.mailing_service.domain
+        spring.json.value.default.type: com.company.mailing_service.domain.MailEvent
+        springg.json.use.type.headers: false
+    listener:
+      ack-mode: manual
 
 mailing:
   repository-mode: mock
