@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class MailingService {
 
     private static final String DEFAULT_TEMPLATE_KEY = "none";
+    // should i add enum types for a future templates?
 
     private final MailRepository mailRepository;
 

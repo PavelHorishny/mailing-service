@@ -15,7 +15,7 @@ public class MailEntityMapperTest {
     private MailRecord record;
     private MailEntity entity;
 
-    @BeforeEach
+    @BeforeEach //beforeAll?
     void setUp() {
         MailRecordFixture fixture = MailRecordFixture.getInstance();
 
