@@ -11,10 +11,15 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public class MailEventFixture {
+    @Builder.Default
     private String eventId = "evt-1";
-  private String recipient = "user@example.com";
+    @Builder.Default
+    private String recipient = "user@example.com";
+    @Builder.Default
     private String templateKey = "test";
+    @Builder.Default
     private String locale = "en";
+    @Builder.Default
     private Map<String, Object> variables = Map.of();
 
     public static MailEventFixture getInstance() {

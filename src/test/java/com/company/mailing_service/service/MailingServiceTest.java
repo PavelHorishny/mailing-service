@@ -5,6 +5,8 @@ import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
 import com.company.mailing_service.fixtures.MailEventFixture;
 import com.company.mailing_service.repository.MailRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -33,6 +35,13 @@ class MailingServiceTest {
 
     @Captor
     private ArgumentCaptor<MailRecord> recordCaptor;
+
+    private MailEventFixture fx;
+
+    @BeforeEach
+    void setUpFixture(){
+        fx = MailEventFixture.getInstance();
+    }
 
     @Test
     void savesNewMailRecordWhenEventIsNotDuplicate() {
@@ -78,9 +87,9 @@ class MailingServiceTest {
         //MailEvent event = new MailEvent("evt-4", "user@example.com", null, "ru", Map.of());
         MailEvent event = MailEventFixture.getInstance().withEventId("evt-4").withRecipient("user@example.com").withTemplateKey(null).withLocale("ru").toMailEvent();
 
-        when(mailRepository.findByIdempotencyKey("evt-4")).thenReturn(Optional.empty());
+        when(mailRepository.findByIdempotencyKey(fx.getEventId())).thenReturn(Optional.empty());
 
-        mailingService.process(event);
+        mailingService.process(fx.withTemplateKey(null).toMailEvent());
 
         verify(mailRepository).save(recordCaptor.capture());
         assertThat(recordCaptor.getValue().getTemplateKey()).isEqualTo("none");
@@ -90,9 +99,9 @@ class MailingServiceTest {
     void defaultsLocaleWhenMissing() {
         //MailEvent event = new MailEvent("evt-5", "user@example.com", "welcome", null, Map.of());
         MailEvent event = MailEventFixture.getInstance().withEventId("evt-5").withRecipient("user@example.com").withTemplateKey("welcome").withLocale(null).toMailEvent();
-        when(mailRepository.findByIdempotencyKey("evt-5")).thenReturn(Optional.empty());
+        when(mailRepository.findByIdempotencyKey(fx.getEventId())).thenReturn(Optional.empty());
 
-        mailingService.process(event);
+        mailingService.process(fx.withLocale(null).toMailEvent());
 
         verify(mailRepository).save(recordCaptor.capture());
         assertThat(recordCaptor.getValue().getLocale()).isEqualTo("en");
