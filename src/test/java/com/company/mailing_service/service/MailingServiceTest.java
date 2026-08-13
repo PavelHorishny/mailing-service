@@ -74,9 +74,9 @@ class MailingServiceTest {
 
     @Test
     void skipsProcessingWhenRecipientIsMissing() {
-        MailEvent event = new MailEvent("evt-3", null, "welcome", "ru", Map.of());
+        //MailEvent event = new MailEvent("evt-3", null, "welcome", "ru", Map.of());
 
-        mailingService.process(event);
+        mailingService.process(fx.withRecipient(null).toMailEvent());
 
         verify(mailRepository, never()).findByIdempotencyKey(any());
         verify(mailRepository, never()).save(any());
@@ -85,7 +85,7 @@ class MailingServiceTest {
     @Test
     void defaultsTemplateKeyWhenMissing() {
         //MailEvent event = new MailEvent("evt-4", "user@example.com", null, "ru", Map.of());
-        MailEvent event = MailEventFixture.getInstance().withEventId("evt-4").withRecipient("user@example.com").withTemplateKey(null).withLocale("ru").toMailEvent();
+        //MailEvent event = MailEventFixture.getInstance().withEventId("evt-4").withRecipient("user@example.com").withTemplateKey(null).withLocale("ru").toMailEvent();
 
         when(mailRepository.findByIdempotencyKey(fx.getEventId())).thenReturn(Optional.empty());
 
@@ -98,7 +98,7 @@ class MailingServiceTest {
     @Test
     void defaultsLocaleWhenMissing() {
         //MailEvent event = new MailEvent("evt-5", "user@example.com", "welcome", null, Map.of());
-        MailEvent event = MailEventFixture.getInstance().withEventId("evt-5").withRecipient("user@example.com").withTemplateKey("welcome").withLocale(null).toMailEvent();
+        //MailEvent event = MailEventFixture.getInstance().withEventId("evt-5").withRecipient("user@example.com").withTemplateKey("welcome").withLocale(null).toMailEvent();
         when(mailRepository.findByIdempotencyKey(fx.getEventId())).thenReturn(Optional.empty());
 
         mailingService.process(fx.withLocale(null).toMailEvent());
