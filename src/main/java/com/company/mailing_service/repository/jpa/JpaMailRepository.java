@@ -33,6 +33,7 @@ public class JpaMailRepository implements MailRepository {
                 .build();*/
 
         return mapper.toRecord(dao.save(mapper.toEntity(record)));
+
     }
 
     @Override

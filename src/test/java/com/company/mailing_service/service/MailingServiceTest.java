@@ -3,6 +3,7 @@ package com.company.mailing_service.service;
 import com.company.mailing_service.domain.MailEvent;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
+import com.company.mailing_service.fixtures.MailEventFixture;
 import com.company.mailing_service.repository.MailRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -74,7 +75,9 @@ class MailingServiceTest {
 
     @Test
     void defaultsTemplateKeyWhenMissing() {
-        MailEvent event = new MailEvent("evt-4", "user@example.com", null, "ru", Map.of());
+        //MailEvent event = new MailEvent("evt-4", "user@example.com", null, "ru", Map.of());
+        MailEvent event = MailEventFixture.getInstance().withEventId("evt-4").withRecipient("user@example.com").withTemplateKey(null).withLocale("ru").toMailEvent();
+
         when(mailRepository.findByIdempotencyKey("evt-4")).thenReturn(Optional.empty());
 
         mailingService.process(event);
@@ -85,7 +88,8 @@ class MailingServiceTest {
 
     @Test
     void defaultsLocaleWhenMissing() {
-        MailEvent event = new MailEvent("evt-5", "user@example.com", "welcome", null, Map.of());
+        //MailEvent event = new MailEvent("evt-5", "user@example.com", "welcome", null, Map.of());
+        MailEvent event = MailEventFixture.getInstance().withEventId("evt-5").withRecipient("user@example.com").withTemplateKey("welcome").withLocale(null).toMailEvent();
         when(mailRepository.findByIdempotencyKey("evt-5")).thenReturn(Optional.empty());
 
         mailingService.process(event);
