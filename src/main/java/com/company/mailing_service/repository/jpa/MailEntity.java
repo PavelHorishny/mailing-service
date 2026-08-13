@@ -20,6 +20,7 @@ import java.util.UUID;
 public class MailEntity {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "idempotency_key", nullable = false)
@@ -49,4 +50,16 @@ public class MailEntity {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        Instant now = Instant.now();
+        createdAt = now;
+        updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 }

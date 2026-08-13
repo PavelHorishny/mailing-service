@@ -26,7 +26,7 @@ class JpaMailRepositoryIT {
     @ServiceConnection
     static PostgreSQLContainer postgres = new PostgreSQLContainer ("postgres:16-alpine");
 
-    @Autowired
+    @Autowired //??
     JpaMailRepository repository;
 
     private MailRecord newRecord(String idempotencyKey, String recipient) {

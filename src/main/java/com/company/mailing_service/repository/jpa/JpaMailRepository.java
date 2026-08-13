@@ -23,19 +23,20 @@ public class JpaMailRepository implements MailRepository {
     @Override
     @Transactional
     public MailRecord save(MailRecord record) {
-        UUID id = record.getId() != null ? record.getId() : UUID.randomUUID();
+       /* UUID id = record.getId() != null ? record.getId() : UUID.randomUUID();
         Instant now = Instant.now();
 
         MailRecord entity = record.toBuilder()
                 .id(id)
                 .createdAt(record.getCreatedAt() != null ? record.getCreatedAt() : now)
                 .updatedAt(now)
-                .build();
+                .build();*/
 
-        return mapper.toRecord(dao.save(mapper.toEntity(entity)));
+        return mapper.toRecord(dao.save(mapper.toEntity(record)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<MailRecord> findByIdempotencyKey(String idempotencyKey) {
         return dao.findByIdempotencyKey(idempotencyKey).map(mapper::toRecord);
     }
@@ -45,7 +46,7 @@ public class JpaMailRepository implements MailRepository {
     public void updateStatus(UUID id, MailStatus status) {
         dao.findById(id).ifPresent(entity -> {
             entity.setStatus(status);
-            entity.setUpdatedAt(Instant.now());
+            //entity.setUpdatedAt(Instant.now());
         });
     }
 
@@ -55,7 +56,7 @@ public class JpaMailRepository implements MailRepository {
         dao.findById(id).ifPresent(entity -> {
             entity.setAttemptCount(entity.getAttemptCount() + 1);
             entity.setLastError(lastError);
-            entity.setUpdatedAt(Instant.now());
+            //entity.setUpdatedAt(Instant.now());
         });
     }
 
