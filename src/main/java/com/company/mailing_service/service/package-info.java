@@ -1,8 +1,8 @@
 /**
- * Core service layer: {@code MailingService} orchestrates the mail processing pipeline,
- * and the {@code TemplateSelectionService}, {@code TemplateRenderService}, {@code MailSender}
- * interfaces define its collaborators. Mock implementations live in
- * {@link com.company.mailing_service.service.mock}; real implementations live in
- * {@link com.company.mailing_service.service.impl}.
+ * Application/orchestration layer: {@code MailingService} coordinates domain objects and the
+ * {@code MailRepository} port to process a {@code MailEvent}. Depends only on
+ * {@link com.company.mailing_service.domain} — no infrastructure imports allowed here.
+ * Concrete adapters for this layer's future collaborators (mail sending, template rendering)
+ * live under {@link com.company.mailing_service.infrastructure.service}.
  */
 package com.company.mailing_service.service;

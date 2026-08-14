@@ -23,6 +23,7 @@ spring:
       ack-mode: manual
 
 mailing:
+  topic: mailing-events
   repository-mode: mock
   max-send-attempts: 5
   retry:

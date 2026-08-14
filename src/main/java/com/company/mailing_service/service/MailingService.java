@@ -3,11 +3,14 @@ package com.company.mailing_service.service;
 import com.company.mailing_service.domain.MailEvent;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
-import com.company.mailing_service.repository.MailRepository;
+import com.company.mailing_service.domain.MailRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailingService {
@@ -25,10 +28,6 @@ public class MailingService {
             return;
         }
 
-        if (mailRepository.findByIdempotencyKey(event.eventId()).isPresent()) {
-            return;
-        }
-
         MailRecord record = MailRecord.builder()
                 .idempotencyKey(event.eventId())
                 .recipient(event.recipient())
@@ -37,8 +36,12 @@ public class MailingService {
                 .status(MailStatus.NEW)
                 .attemptCount(0)
                 .build();
-
+        try{
         mailRepository.save(record);
+        }catch (DataIntegrityViolationException e){
+            log.debug("Duplicate mail event {}, already processed", event.eventId());
+        }
+
     }
 
     private static boolean isBlank(String value) {

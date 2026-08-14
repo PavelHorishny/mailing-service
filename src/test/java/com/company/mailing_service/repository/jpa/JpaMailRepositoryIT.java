@@ -2,64 +2,48 @@ package com.company.mailing_service.repository.jpa;
 
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
+import com.company.mailing_service.fixtures.MailRecordFixture;
+import com.company.mailing_service.testConf.ITConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.postgresql.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
-class JpaMailRepositoryIT {
 
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer postgres = new PostgreSQLContainer ("postgres:16-alpine");
+class JpaMailRepositoryIT extends ITConfig {
 
-    @Autowired //??
-    JpaMailRepository repository;
+    private MailRecordFixture fx;
 
-    private MailRecord newRecord(String idempotencyKey, String recipient) {
-        return MailRecord.builder()
-                .idempotencyKey(idempotencyKey)
-                .recipient(recipient)
-                .templateKey("welcome")
-                .locale("ru")
-                .status(MailStatus.NEW)
-                .attemptCount(0)
-                .build();
+    @BeforeEach
+    void setUpFixture(){
+        fx = MailRecordFixture.getInstance();
     }
 
     @Test
     void savesAndFindsByIdempotencyKey() {
-        MailRecord saved = repository.save(newRecord("evt-1", "user@example.com"));
+        MailRecord saved = getRepository().save(fx.withIdempotencyKey("evt-1").withRecipient("user@example.com").toMailRecord());
 
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getCreatedAt()).isNotNull();
 
-        Optional<MailRecord> found = repository.findByIdempotencyKey("evt-1");
+        Optional<MailRecord> found = getRepository().findByIdempotencyKey("evt-1");
         assertThat(found).isPresent();
         assertThat(found.get().getRecipient()).isEqualTo("user@example.com");
     }
 
     @Test
     void updatesStatusAndAttempt() {
-        MailRecord saved = repository.save(newRecord("evt-2", "user2@example.com"));
+        MailRecord saved = getRepository().save(fx.withIdempotencyKey("evt-2").withRecipient("user2@example.com").toMailRecord());
 
-        repository.incrementAttempt(saved.getId(), "SMTP timeout");
-        repository.updateStatus(saved.getId(), MailStatus.FAILED_RETRYING);
+        getRepository().incrementAttempt(saved.getId(), "SMTP timeout");
+        getRepository().updateStatus(saved.getId(), MailStatus.FAILED_RETRYING);
 
-        MailRecord updated = repository.findByIdempotencyKey("evt-2").orElseThrow();
+        MailRecord updated = getRepository().findByIdempotencyKey("evt-2").orElseThrow();
         assertThat(updated.getAttemptCount()).isEqualTo(1);
         assertThat(updated.getLastError()).isEqualTo("SMTP timeout");
         assertThat(updated.getStatus()).isEqualTo(MailStatus.FAILED_RETRYING);
@@ -67,9 +51,9 @@ class JpaMailRepositoryIT {
 
     @Test
     void uniqueConstraintPreventsDuplicateIdempotencyKey() {
-        repository.save(newRecord("evt-3", "a@example.com"));
+        getRepository().save(fx.withIdempotencyKey("evt-3").withRecipient("a@example.com").toMailRecord());
 
-        assertThatThrownBy(() -> repository.save(newRecord("evt-3", "b@example.com")))
+        assertThatThrownBy(() -> getRepository().save(fx.withIdempotencyKey("evt-3").withRecipient("b@example.com").toMailRecord()))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 }

@@ -2,9 +2,9 @@ package com.company.mailing_service.mapper;
 
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.fixtures.MailRecordFixture;
-import com.company.mailing_service.repository.jpa.MailEntity;
-import com.company.mailing_service.repository.jpa.MailEntityMapper;
-import com.company.mailing_service.repository.jpa.MailEntityMapperImpl;
+import com.company.mailing_service.infrastructure.persistence.jpa.MailEntity;
+import com.company.mailing_service.infrastructure.persistence.jpa.MailEntityMapper;
+import com.company.mailing_service.infrastructure.persistence.jpa.MailEntityMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class MailEntityMapperTest {
     private MailRecord record;
     private MailEntity entity;
 
-    @BeforeEach //beforeAll?
+    @BeforeEach
     void setUp() {
         MailRecordFixture fixture = MailRecordFixture.getInstance();
 

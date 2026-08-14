@@ -6,24 +6,23 @@ import lombok.*;
 import java.util.Map;
 
 @With
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class MailEventFixture {
-    @Builder.Default
+
     private String eventId = "evt-1";
-    @Builder.Default
+
     private String recipient = "user@example.com";
-    @Builder.Default
+
     private String templateKey = "test";
-    @Builder.Default
+
     private String locale = "en";
-    @Builder.Default
+
     private Map<String, Object> variables = Map.of();
 
     public static MailEventFixture getInstance() {
-        return MailEventFixture.builder().build();
+        return new MailEventFixture();
     }
 
     public MailEvent toMailEvent() {
