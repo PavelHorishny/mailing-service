@@ -25,6 +25,7 @@ public class MailingService {
 
     public void process(MailEvent event) {
         if (isBlank(event.recipient())) {
+            log.warn("Skipping mail event {} — recipient is missing", event.eventId());
             return;
         }
 
@@ -37,7 +38,8 @@ public class MailingService {
                 .attemptCount(0)
                 .build();
         try{
-        mailRepository.save(record);
+            mailRepository.save(record);
+            log.info("Saved new mail record for event {}", event.eventId());
         }catch (DataIntegrityViolationException e){
             log.debug("Duplicate mail event {}, already processed", event.eventId());
         }

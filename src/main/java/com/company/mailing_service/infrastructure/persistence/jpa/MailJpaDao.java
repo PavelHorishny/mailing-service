@@ -7,5 +7,4 @@ import java.util.UUID;
 
 public interface MailJpaDao extends JpaRepository<MailEntity, UUID> {
     Optional<MailEntity> findByIdempotencyKey(String idempotencyKey);
-    void deleteAll();
 }

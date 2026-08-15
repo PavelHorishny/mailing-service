@@ -20,6 +20,7 @@ public class MailEventConsumer {
     public void onMessage(MailEvent event, Acknowledgment acknowledgment) {
         MDC.put("eventId", event.eventId());
         try {
+            log.info("Received mail event for recipient {}", event.recipient());
             mailingService.process(event);
             acknowledgment.acknowledge();
         } finally {
