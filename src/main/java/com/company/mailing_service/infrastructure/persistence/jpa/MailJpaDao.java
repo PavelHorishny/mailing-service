@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MailJpaDao extends JpaRepository<MailEntity, UUID> {
-    Optional<MailEntity> findByIdempotencyKey(String idempotencyKey);
+  Optional<MailEntity> findByIdempotencyKey(String idempotencyKey);
 }

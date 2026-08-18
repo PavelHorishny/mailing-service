@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MailEntityMapper {
-    MailEntity toEntity(MailRecord record);
-    MailRecord toRecord(MailEntity entity);
+  MailEntity toEntity(MailRecord record);
+
+  MailRecord toRecord(MailEntity entity);
 }

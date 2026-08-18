@@ -1,6 +1,7 @@
 HELP.md
 PENDING_CHANGES.md
 DEVLOG.md
+IDEAS.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

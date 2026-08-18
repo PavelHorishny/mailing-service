@@ -2,10 +2,9 @@ package com.company.mailing_service.fixtures;
 
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
-import lombok.*;
-
 import java.time.Instant;
 import java.util.UUID;
+import lombok.*;
 
 @With
 @NoArgsConstructor

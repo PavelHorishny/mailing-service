@@ -1,16 +1,15 @@
 package com.company.mailing_service.infrastructure.persistence.jpa;
 
 import com.company.mailing_service.domain.MailRecord;
-import com.company.mailing_service.domain.MailStatus;
 import com.company.mailing_service.domain.MailRepository;
+import com.company.mailing_service.domain.MailStatus;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Repository

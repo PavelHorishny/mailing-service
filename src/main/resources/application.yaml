@@ -25,6 +25,7 @@ spring:
 mailing:
   topic: mailing-events
   repository-mode: mock
+  sender-mode: mock
   max-send-attempts: 5
   retry:
     base-delay-seconds: 10

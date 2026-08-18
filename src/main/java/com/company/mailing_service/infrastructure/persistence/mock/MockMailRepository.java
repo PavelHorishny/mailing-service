@@ -1,17 +1,17 @@
 package com.company.mailing_service.infrastructure.persistence.mock;
 
 import com.company.mailing_service.domain.MailRecord;
-import com.company.mailing_service.domain.MailStatus;
 import com.company.mailing_service.domain.MailRepository;
+import com.company.mailing_service.domain.MailStatus;
+import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Repository
 @ConditionalOnProperty(prefix = "mailing", name = "repository-mode", havingValue = "mock", matchIfMissing = true)

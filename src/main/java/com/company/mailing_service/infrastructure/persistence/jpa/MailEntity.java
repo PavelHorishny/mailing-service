@@ -1,13 +1,14 @@
 package com.company.mailing_service.infrastructure.persistence.jpa;
 import com.company.mailing_service.domain.MailStatus;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
-import java.util.UUID;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 
 @Entity
 @Table(name = "mail_records", uniqueConstraints = {
@@ -45,18 +46,13 @@ public class MailEntity {
     @Column(name = "last_error")
     private String lastError;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    @Generated(event = EventType.INSERT)
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = false, insertable = false)
+    @Generated(event = EventType.INSERT)
     private Instant updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        Instant now = Instant.now();
-        createdAt = now;
-        updatedAt = now;
-    }
 
     @PreUpdate
     protected void onUpdate() {

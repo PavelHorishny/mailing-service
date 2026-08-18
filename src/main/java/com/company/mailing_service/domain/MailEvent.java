@@ -1,8 +1,8 @@
 package com.company.mailing_service.domain;
 
+import java.util.Map;
 import lombok.Builder;
 
-import java.util.Map;
 @Builder
 public record MailEvent(
         String eventId,

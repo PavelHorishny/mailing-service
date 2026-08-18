@@ -4,11 +4,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MailRepository {
-    MailRecord save(MailRecord record);
+  MailRecord save(MailRecord record);
 
-    Optional<MailRecord> findByIdempotencyKey(String idempotencyKey);
+  Optional<MailRecord> findByIdempotencyKey(String idempotencyKey);
 
-    void updateStatus(UUID id, MailStatus status);
+  void updateStatus(UUID id, MailStatus status);
 
-    void incrementAttempt(UUID id, String lastError);
+  void incrementAttempt(UUID id, String lastError);
 }

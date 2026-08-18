@@ -1,9 +1,8 @@
 package com.company.mailing_service.fixtures;
 
 import com.company.mailing_service.domain.MailEvent;
-import lombok.*;
-
 import java.util.Map;
+import lombok.*;
 
 @With
 @NoArgsConstructor

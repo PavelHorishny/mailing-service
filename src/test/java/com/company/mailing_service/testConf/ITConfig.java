@@ -17,27 +17,23 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @Getter
 public class ITConfig {
 
-    @ServiceConnection
-    static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16-alpine");
+  @ServiceConnection
+  static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16-alpine");
 
-    static {
-        postgres.start();
-    }
+  static {
+    postgres.start();
+  }
 
-    @Autowired
-    private MailingService mailingService;
+  @Autowired private MailingService mailingService;
 
-    @Autowired
-    private MailRepository mailRepository;
+  @Autowired private MailRepository mailRepository;
 
-    @Autowired
-    private JpaMailRepository repository;
+  @Autowired private JpaMailRepository repository;
 
-    @Autowired
-    private MailJpaDao mailJpaDao;
+  @Autowired private MailJpaDao mailJpaDao;
 
-    @AfterEach
-    void tearDown() {
-        mailJpaDao.deleteAll();
-    }
+  @AfterEach
+  void tearDown() {
+    mailJpaDao.deleteAll();
+  }
 }

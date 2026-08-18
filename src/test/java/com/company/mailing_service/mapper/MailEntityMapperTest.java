@@ -1,5 +1,7 @@
 package com.company.mailing_service.mapper;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.fixtures.MailRecordFixture;
 import com.company.mailing_service.infrastructure.persistence.jpa.MailEntity;
@@ -7,8 +9,6 @@ import com.company.mailing_service.infrastructure.persistence.jpa.MailEntityMapp
 import com.company.mailing_service.infrastructure.persistence.jpa.MailEntityMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MailEntityMapperTest {
     private final MailEntityMapper mailEntityMapper = new MailEntityMapperImpl();

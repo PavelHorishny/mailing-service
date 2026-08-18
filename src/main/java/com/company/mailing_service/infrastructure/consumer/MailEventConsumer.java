@@ -14,17 +14,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MailEventConsumer {
 
-    private final MailingService mailingService;
+  private final MailingService mailingService;
 
-    @KafkaListener(topics = "${mailing.topic}")
-    public void onMessage(MailEvent event, Acknowledgment acknowledgment) {
-        MDC.put("eventId", event.eventId());
-        try {
-            log.info("Received mail event for recipient {}", event.recipient());
-            mailingService.process(event);
-            acknowledgment.acknowledge();
-        } finally {
-            MDC.remove("eventId");
-        }
+  @KafkaListener(topics = "${mailing.topic}")
+  public void onMessage(MailEvent event, Acknowledgment acknowledgment) {
+    MDC.put("eventId", event.eventId());
+    try {
+      log.info("Received mail event for recipient {}", event.recipient());
+      mailingService.process(event);
+      acknowledgment.acknowledge();
+    } finally {
+      MDC.remove("eventId");
     }
+  }
 }
