@@ -29,6 +29,7 @@ mailing:
   max-send-attempts: 5
   retry:
     base-delay-seconds: 10
+    poll-interval-ms: 10000
 
 management:
   endpoints:

@@ -3,6 +3,8 @@ package com.company.mailing_service.infrastructure.persistence.jpa;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailRepository;
 import com.company.mailing_service.domain.MailStatus;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,18 @@ public class JpaMailRepository implements MailRepository {
     @Transactional(readOnly = true)
     public Optional<MailRecord> findByIdempotencyKey(String idempotencyKey) {
         return dao.findByIdempotencyKey(idempotencyKey).map(mapper::toRecord);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<MailRecord> findById(UUID id) {
+        return dao.findById(id).map(mapper::toRecord);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<MailRecord> findByStatus(MailStatus status) {
+        return dao.findByStatus(status).stream().map(mapper::toRecord).toList();
     }
 
     @Override

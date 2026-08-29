@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -77,5 +79,22 @@ public class MailingService {
                         maxSendAttempts);
             }
         }
+    }
+
+    public void retry(MailRecord record) {
+        log.info("Retrying mail record {} (attempt {})", record.getId(), record.getAttemptCount() + 1);
+        attemptSend(record);
+    }
+
+    public MailRecord forceRetry(UUID id) {
+        MailRecord record =
+            mailRepository.findById(id).orElseThrow(() -> new MailRecordNotFoundException(id));
+
+        if (record.getStatus() != MailStatus.FAILED_RETRYING){
+            throw new InvalidMailStatusException(id, record.getStatus());
+        }
+        log.info("Force retry requested for mail record {}", id);
+        retry(record);
+        return mailRepository.findById(id).orElseThrow(() -> new MailRecordNotFoundException(id));
     }
 }

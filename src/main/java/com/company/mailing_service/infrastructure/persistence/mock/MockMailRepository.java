@@ -4,6 +4,7 @@ import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailRepository;
 import com.company.mailing_service.domain.MailStatus;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,6 +47,16 @@ public class MockMailRepository implements MailRepository {
     public Optional<MailRecord> findByIdempotencyKey(String idempotencyKey) {
         return Optional.ofNullable(idempotencyIndex.get(idempotencyKey))
                 .map(records::get);
+    }
+
+    @Override
+    public Optional<MailRecord> findById(UUID id) {
+        return Optional.ofNullable(records.get(id));
+    }
+
+    @Override
+    public List<MailRecord> findByStatus(MailStatus status) {
+        return records.values().stream().filter(record -> record.getStatus() == status).toList();
     }
 
     @Override
