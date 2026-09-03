@@ -62,5 +62,11 @@ public class JpaMailRepository implements MailRepository {
         }, () -> log.warn("incrementAttempt called for unknown mail record id {}", id));
     }
 
+    @Override
+    @Transactional
+    public List<MailRecord> findFailedRetrying(int limit) {
+        return dao.findByStatusFailed(limit).stream().map(mapper::toRecord).toList();
+    }
+
 }
 

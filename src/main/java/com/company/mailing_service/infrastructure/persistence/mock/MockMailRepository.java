@@ -81,4 +81,12 @@ public class MockMailRepository implements MailRepository {
             log.warn("incrementAttempt called for unknown mail record id {}", id);
         }
     }
+
+    @Override
+    public List<MailRecord> findFailedRetrying(int limit) {
+        return records.values().stream()
+                .filter(record -> record.getStatus() == MailStatus.FAILED_RETRYING)
+                .limit(limit)
+                .toList();
+    }
 }

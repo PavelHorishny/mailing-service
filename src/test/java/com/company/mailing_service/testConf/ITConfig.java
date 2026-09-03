@@ -1,9 +1,6 @@
 package com.company.mailing_service.testConf;
 
-import com.company.mailing_service.domain.MailRepository;
-import com.company.mailing_service.infrastructure.persistence.jpa.JpaMailRepository;
 import com.company.mailing_service.infrastructure.persistence.jpa.MailJpaDao;
-import com.company.mailing_service.service.MailingService;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +20,6 @@ public class ITConfig {
   static {
     postgres.start();
   }
-
-  @Autowired private MailingService mailingService;
-
-  @Autowired private MailRepository mailRepository;
-
-  @Autowired private JpaMailRepository repository;
 
   @Autowired private MailJpaDao mailJpaDao;
 

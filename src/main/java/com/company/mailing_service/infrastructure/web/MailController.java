@@ -1,7 +1,7 @@
 package com.company.mailing_service.infrastructure.web;
 
 import com.company.mailing_service.domain.MailRecord;
-import com.company.mailing_service.service.MailingService;
+import com.company.mailing_service.infrastructure.service.impl.MailingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

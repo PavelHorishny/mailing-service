@@ -14,6 +14,8 @@ import com.company.mailing_service.domain.*;
 import com.company.mailing_service.fixtures.MailEventFixture;
 import com.company.mailing_service.fixtures.MailRecordFixture;
 import java.util.UUID;
+
+import com.company.mailing_service.infrastructure.service.impl.MailingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +35,9 @@ class MailingServiceTest {
     @Mock
     private MailSender mailSender;
 
+    @Mock
+    private MailTemplateRenderer templateRenderer;
+
     @InjectMocks
     private MailingService mailingService;
 
@@ -47,6 +52,7 @@ class MailingServiceTest {
         fx = MailEventFixture.getInstance();
         savedFixture = MailRecordFixture.getInstance().withId(UUID.randomUUID());
         lenient().when(mailRepository.save(any())).thenReturn(savedFixture.toMailRecord());
+        lenient().when(templateRenderer.render(any(), any(), any())).thenReturn("rendered-body");
     }
 
     @Test
@@ -71,7 +77,7 @@ class MailingServiceTest {
         assertThatCode(() -> mailingService.process(fx.toMailEvent())).doesNotThrowAnyException();
 
         verify(mailRepository).save(any());
-        verify(mailSender, never()).send(any());
+        verify(mailSender, never()).send(any(), any());
     }
 
     @Test
@@ -79,7 +85,7 @@ class MailingServiceTest {
         mailingService.process(fx.withRecipient(null).toMailEvent());
 
         verify(mailRepository, never()).save(any());
-        verify(mailSender, never()).send(any());
+        verify(mailSender, never()).send(any(), any());
     }
 
     @Test
@@ -102,14 +108,14 @@ class MailingServiceTest {
     void marksRecordAsSentWhenSendSucceeds() {
         mailingService.process(fx.toMailEvent());
 
-        verify(mailSender).send(any());
+        verify(mailSender).send(any(), any());
         verify(mailRepository).updateStatus(savedFixture.getId(), MailStatus.SENT);
         verify(mailRepository, never()).incrementAttempt(any(), any());
     }
 
     @Test
     void incrementsAttemptAndMarksFailedRetryingWhenSendFailsAndAttemptsRemain() {
-        doThrow(new MailSendException("boom")).when(mailSender).send(any());
+        doThrow(new MailSendException("boom")).when(mailSender).send(any(), any());
 
         mailingService.process(fx.toMailEvent());
 
@@ -123,7 +129,7 @@ class MailingServiceTest {
                 .withId(UUID.randomUUID())
                 .withAttemptCount(4);
         when(mailRepository.save(any())).thenReturn(savedFixture.toMailRecord());
-        doThrow(new MailSendException("boom")).when(mailSender).send(any());
+        doThrow(new MailSendException("boom")).when(mailSender).send(any(), any());
 
         mailingService.process(fx.toMailEvent());
 

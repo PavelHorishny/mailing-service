@@ -28,8 +28,9 @@ mailing:
   sender-mode: mock
   max-send-attempts: 5
   retry:
+    batch-size: 10
     base-delay-seconds: 10
-    poll-interval-ms: 10000
+    poll-cron: "0 * * * * *"
 
 management:
   endpoints:

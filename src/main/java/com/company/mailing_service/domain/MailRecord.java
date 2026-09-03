@@ -1,6 +1,7 @@
 package com.company.mailing_service.domain;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Value;
@@ -13,6 +14,7 @@ public class MailRecord {
     String recipient;
     String templateKey;
     String locale;
+    Map<String, Object> variables;
     MailStatus status;
     int attemptCount;
     String lastError;

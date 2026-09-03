@@ -1,4 +1,4 @@
-package com.company.mailing_service.service;
+package com.company.mailing_service.infrastructure.service.impl;
 
 import com.company.mailing_service.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ public class MailingService {
 
     private final MailRepository mailRepository;
     private final MailSender mailSender;
+    private final MailTemplateRenderer templateRenderer;
 
     @Value("${mailing.default-locale:en}")
     private String defaultLocale = "en";
@@ -40,6 +41,7 @@ public class MailingService {
                 .recipient(event.recipient())
                 .templateKey(isBlank(event.templateKey()) ? DEFAULT_TEMPLATE_KEY : event.templateKey())
                 .locale(isBlank(event.locale()) ? defaultLocale : event.locale())
+                .variables(event.variables())
                 .status(MailStatus.NEW)
                 .attemptCount(0)
                 .build();
@@ -58,10 +60,11 @@ public class MailingService {
 
     private void attemptSend(MailRecord record) {
         try {
-            mailSender.send(record);
+            String body = templateRenderer.render(record.getTemplateKey(), record.getLocale(), record.getVariables());
+            mailSender.send(record, body);
             mailRepository.updateStatus(record.getId(), MailStatus.SENT);
             log.info("Mail sent for record {}", record.getId());
-        } catch (MailSendException e) {
+        } catch (MailSendException | MailRenderException e) {
             mailRepository.incrementAttempt(record.getId(), e.getMessage());
             int attemptsSoFar = record.getAttemptCount() + 1;
             if (attemptsSoFar >= maxSendAttempts) {

@@ -16,4 +16,7 @@ public interface MailRepository {
   void updateStatus(UUID id, MailStatus status);
 
   void incrementAttempt(UUID id, String lastError);
+
+  List<MailRecord> findFailedRetrying(int limit);
+
 }

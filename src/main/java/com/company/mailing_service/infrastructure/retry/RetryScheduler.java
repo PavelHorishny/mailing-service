@@ -2,10 +2,10 @@ package com.company.mailing_service.infrastructure.retry;
 
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailRepository;
-import com.company.mailing_service.domain.MailStatus;
-import com.company.mailing_service.service.MailingService;
+import com.company.mailing_service.infrastructure.service.impl.MailingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +19,13 @@ public class RetryScheduler {
     private final MailRepository mailRepository;
     private final MailingService mailingService;
 
-    @Scheduled(fixedDelayString = "${mailing.retry.poll-interval-ms:10000}")
+    @Value("${mailing.retry.batch-size:100}")
+    private int batchSize;
+
+    @Scheduled(cron = "${mailing.retry.poll-cron:0 * * * * *}")
     public void pollAndRetry(){
-        List<MailRecord> candidates = mailRepository.findByStatus(MailStatus.FAILED_RETRYING);
+        List<MailRecord> candidates =
+                mailRepository.findFailedRetrying(batchSize);
         if(candidates.isEmpty()){
             log.debug("No failed mail records to retry");
             return;

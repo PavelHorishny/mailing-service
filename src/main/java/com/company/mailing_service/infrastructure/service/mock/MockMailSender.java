@@ -16,11 +16,15 @@ public class MockMailSender implements MailSender {
     private static final double FAILURE_RATE = 0.3;
 
     @Override
-    public void send(MailRecord record) {
+    public void send(MailRecord record, String body) {
         if (ThreadLocalRandom.current().nextDouble() < FAILURE_RATE) {
             log.warn("Simulated send failure for mail record {}", record.getId());
             throw new MailSendException("Simulated failure sending mail to " + record.getRecipient());
         }
-        log.info("Mock-sent mail to {} (template={})", record.getRecipient(), record.getTemplateKey());
+        log.info(
+                "Mock-sent mail to {} (template={}, bodyLength={})",
+                record.getRecipient(),
+                record.getTemplateKey(),
+                body.length());
     }
 }

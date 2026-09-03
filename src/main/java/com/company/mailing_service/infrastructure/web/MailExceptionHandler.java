@@ -2,7 +2,6 @@ package com.company.mailing_service.infrastructure.web;
 
 import com.company.mailing_service.domain.InvalidMailStatusException;
 import com.company.mailing_service.domain.MailRecordNotFoundException;
-import com.company.mailing_service.infrastructure.web.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

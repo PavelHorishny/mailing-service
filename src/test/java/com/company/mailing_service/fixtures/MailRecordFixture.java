@@ -3,6 +3,7 @@ package com.company.mailing_service.fixtures;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailStatus;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class MailRecordFixture {
     private String recipient = "test@example.com";
     private String templateKey = "none";
     private String locale = "en";
+    private Map<String, Object> variables = Map.of();
     private MailStatus status = MailStatus.NEW;
     private int attemptCount = 0;
     private String lastError = "";
@@ -33,6 +35,7 @@ public class MailRecordFixture {
                 .recipient(recipient)
                 .templateKey(templateKey)
                 .locale(locale)
+                .variables(variables)
                 .status(status)
                 .attemptCount(attemptCount)
                 .lastError(lastError)

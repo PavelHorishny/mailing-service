@@ -28,6 +28,7 @@ public class MailEntityMapperTest {
                 .lastError(fixture.getLastError())
                 .locale(fixture.getLocale())
                 .templateKey(fixture.getTemplateKey())
+                .variables(fixture.getVariables())
                 .createdAt(fixture.getCreatedAt())
                 .updatedAt(fixture.getUpdatedAt())
                 .build();
@@ -38,6 +39,7 @@ public class MailEntityMapperTest {
                 fixture.getRecipient(),
                 fixture.getTemplateKey(),
                 fixture.getLocale(),
+                fixture.getVariables(),
                 fixture.getStatus(),
                 fixture.getAttemptCount(),
                 fixture.getLastError(),
@@ -56,6 +58,7 @@ public class MailEntityMapperTest {
         assertThat(testEntity.getRecipient()).isEqualTo(record.getRecipient());
         assertThat(testEntity.getTemplateKey()).isEqualTo(record.getTemplateKey());
         assertThat(testEntity.getLocale()).isEqualTo(record.getLocale());
+        assertThat(testEntity.getVariables()).isEqualTo(record.getVariables());
         assertThat(testEntity.getStatus()).isEqualTo(record.getStatus());
         assertThat(testEntity.getAttemptCount()).isEqualTo(record.getAttemptCount());
         assertThat(testEntity.getLastError()).isEqualTo(record.getLastError());
@@ -74,6 +77,7 @@ public class MailEntityMapperTest {
         assertThat(testRecord.getRecipient()).isEqualTo(entity.getRecipient());
         assertThat(testRecord.getTemplateKey()).isEqualTo(entity.getTemplateKey());
         assertThat(testRecord.getLocale()).isEqualTo(entity.getLocale());
+        assertThat(testRecord.getVariables()).isEqualTo(entity.getVariables());
         assertThat(testRecord.getStatus()).isEqualTo(entity.getStatus());
         assertThat(testRecord.getAttemptCount()).isEqualTo(entity.getAttemptCount());
         assertThat(testRecord.getLastError()).isEqualTo(entity.getLastError());

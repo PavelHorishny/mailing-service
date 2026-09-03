@@ -2,13 +2,16 @@ package com.company.mailing_service.infrastructure.persistence.jpa;
 import com.company.mailing_service.domain.MailStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.generator.EventType;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "mail_records", uniqueConstraints = {
@@ -35,6 +38,10 @@ public class MailEntity {
 
     @Column(nullable = false)
     private String locale;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> variables;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

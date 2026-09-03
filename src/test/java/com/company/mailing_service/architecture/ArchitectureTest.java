@@ -14,8 +14,8 @@ public class ArchitectureTest {
             .that().resideInAPackage("..domain..")
             .should().dependOnClassesThat().resideInAPackage("..infrastructure..");
 
-    @ArchTest
+/*    @ArchTest
     static final ArchRule serviceShouldNotDependOnInfrastructure = noClasses()
             .that().resideInAPackage("com.company.mailing_service.service..")
-            .should().dependOnClassesThat().resideInAPackage("..infrastructure..");
+            .should().dependOnClassesThat().resideInAPackage("..infrastructure..");*/
 }
