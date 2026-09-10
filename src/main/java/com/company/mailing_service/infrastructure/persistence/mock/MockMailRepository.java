@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -87,6 +89,20 @@ public class MockMailRepository implements MailRepository {
         return records.values().stream()
                 .filter(record -> record.getStatus() == MailStatus.FAILED_RETRYING)
                 .limit(limit)
+                .toList();
+    }
+
+    @Override
+    public List<MailRecord> claimFailedRetrying(int limit, Predicate<MailRecord> isDue) {
+        return records.values().stream()
+                .filter(record -> record.getStatus() == MailStatus.FAILED_RETRYING)
+                .filter(isDue)
+                .limit(limit)
+                .map(record -> records.computeIfPresent(record.getId(), (id, existing) ->
+                        existing.getStatus() == MailStatus.FAILED_RETRYING
+                                ? existing.toBuilder().status(MailStatus.RETRYING).build()
+                                : existing))
+                .filter(record -> record != null && record.getStatus() == MailStatus.RETRYING)
                 .toList();
     }
 }

@@ -7,6 +7,8 @@ import com.company.mailing_service.domain.MailStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -66,6 +68,17 @@ public class JpaMailRepository implements MailRepository {
     @Transactional
     public List<MailRecord> findFailedRetrying(int limit) {
         return dao.findByStatusFailed(limit).stream().map(mapper::toRecord).toList();
+    }
+
+    @Override
+    @Transactional
+    public List<MailRecord> claimFailedRetrying(int limit, Predicate<MailRecord> isDue) {
+        List<MailEntity> locked = dao.findByStatusFailed(limit);
+        List<MailEntity> due = locked.stream()
+                .filter(entity -> isDue.test(mapper.toRecord(entity)))
+                .toList();
+        due.forEach(entity->entity.setStatus(MailStatus.RETRYING));
+        return due.stream().map(mapper::toRecord).toList();
     }
 
 }

@@ -2,11 +2,13 @@ package com.company.mailing_service.infrastructure.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.support.Acknowledgment;
 
 @Slf4j
 public abstract class AbstractLoggingConsumer<T> {
 
+    @KafkaHandler
     protected void handle(T event, Acknowledgment acknowledgment) {
         String eventId = extractEventId(event);
         MDC.put("eventId", eventId);

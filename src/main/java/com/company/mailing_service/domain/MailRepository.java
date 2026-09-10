@@ -3,6 +3,7 @@ package com.company.mailing_service.domain;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public interface MailRepository {
   MailRecord save(MailRecord record);
@@ -18,5 +19,6 @@ public interface MailRepository {
   void incrementAttempt(UUID id, String lastError);
 
   List<MailRecord> findFailedRetrying(int limit);
+  List<MailRecord> claimFailedRetrying(int limit, Predicate<MailRecord> isDue);
 
 }

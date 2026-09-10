@@ -4,19 +4,14 @@ import com.company.mailing_service.domain.MailEvent;
 import com.company.mailing_service.infrastructure.service.impl.MailingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@KafkaListener (topics = "${mailing.topic}")
 public class MailEventConsumer extends AbstractLoggingConsumer<MailEvent>{
 
   private final MailingService mailingService;
-
-  @KafkaListener(topics = "${mailing.topic}")
-  public void onMessage(MailEvent event, Acknowledgment acknowledgment) {
-    handle(event, acknowledgment);
-  }
 
   @Override
   protected String extractEventId(MailEvent event) {
