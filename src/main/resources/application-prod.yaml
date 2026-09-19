@@ -1,5 +1,6 @@
 mailing:
   repository-mode: jpa
+  sender-mode: smtp
 
 spring:
   datasource:
@@ -13,3 +14,14 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     listener:
       auto-startup: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
