@@ -16,10 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Fast, in-process check of {@link SmtpMailSender}: GreenMail replaces the real SMTP server,
- * so we can assert on the exact message content without any Docker dependency.
- */
+
 @TestPropertySource(properties = {
         "mailing.sender-mode=smtp",
         "spring.mail.host=localhost",

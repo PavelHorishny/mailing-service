@@ -18,11 +18,7 @@ import java.net.http.HttpResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Heavier smoke test: sends through the same haravich/fake-smtp-server (MailCatcher) image
- * used for local manual verification, to confirm the real wire protocol works end to end.
- * Assertions go through MailCatcher's REST API rather than in-process objects.
- */
+
 class SmtpMailSenderFakeSmtpIT extends ITConfig {
 
     private static final GenericContainer<?> fakeSmtp =

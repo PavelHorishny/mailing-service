@@ -25,11 +25,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-/**
- * Full-stack check of {@link RetryScheduler#pollAndRetry()}: real Postgres-backed
- * repository and real {@link com.company.mailing_service.infrastructure.service.impl.MailingService},
- * only the true external boundary ({@link MailSender}) is mocked — same approach as MailControllerIT.
- */
+
 class RetrySchedulerIT extends ITConfig {
 
     @Autowired
@@ -49,11 +45,7 @@ class RetrySchedulerIT extends ITConfig {
     private UUID seed(MailRecordFixture fixture) {
         MailEntity entity = mailEntityMapper.toEntity(fixture.toMailRecord());
         UUID id = mailJpaDao.save(entity).getId();
-        // updated_at is DB-generated on insert/update (see MailEntity), so it must be
-        // backdated with a raw SQL statement, bypassing Hibernate, to make isDue() true.
-        // The Calendar forces the driver to write in UTC, matching hibernate.jdbc.time_zone=UTC
-        // used when Hibernate reads the column back — otherwise the write goes through the
-        // JVM's default (non-UTC) timezone and Hibernate reads it back several hours off.
+
         jdbcTemplate.update(
                 "UPDATE mail_records SET updated_at = ? WHERE id = ?",
                 ps -> {
