@@ -8,14 +8,14 @@ import com.company.mailing_service.domain.MailStatus;
 import com.company.mailing_service.fixtures.MailRecordFixture;
 import com.company.mailing_service.infrastructure.persistence.jpa.JpaMailRepository;
 import com.company.mailing_service.infrastructure.service.impl.MailingService;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
-class JpaMailRepositoryIT extends ITConfig {
+class JpaMailRepositoryIT extends PostgresITConfig {
     @Autowired
     private MailingService mailingService;
 

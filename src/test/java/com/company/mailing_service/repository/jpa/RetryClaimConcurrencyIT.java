@@ -4,7 +4,7 @@ import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailRepository;
 import com.company.mailing_service.domain.MailStatus;
 import com.company.mailing_service.fixtures.MailRecordFixture;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RetryClaimConcurrencyIT extends ITConfig {
+class RetryClaimConcurrencyIT extends PostgresITConfig {
 
     @Autowired
     private MailRepository mailRepository;

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -29,7 +30,8 @@ public class MailingService {
     private static boolean isBlank(String value) {
         return value == null || value.isBlank();
     }
-
+    
+    @Transactional
     public void process(MailEvent event) {
         if (isBlank(event.recipient())) {
             log.warn("Skipping mail event {} — recipient is missing", event.eventId());

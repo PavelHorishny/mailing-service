@@ -3,11 +3,12 @@ package com.company.mailing_service.infrastructure.service.smtp;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailSender;
 import com.company.mailing_service.fixtures.MailRecordFixture;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.internet.MimeMessage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.mail.host=localhost",
         "spring.mail.port=3025"
 })
-class SmtpMailSenderGreenMailIT extends ITConfig {
+class SmtpMailSenderGreenMailIT extends PostgresITConfig {
 
     @RegisterExtension
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP);
@@ -34,6 +35,7 @@ class SmtpMailSenderGreenMailIT extends ITConfig {
     void resetInbox() {
         greenMail.reset();
     }
+
 
     @Test
     void sendsMailThroughRealSmtpProtocol() throws Exception {

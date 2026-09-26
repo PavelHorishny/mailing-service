@@ -6,13 +6,13 @@ import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.fixtures.MailEventFixture;
 import com.company.mailing_service.infrastructure.persistence.jpa.JpaMailRepository;
 import com.company.mailing_service.infrastructure.service.impl.MailingService;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class MailingServiceIT extends ITConfig {
+class MailingServiceIT extends PostgresITConfig {
     @Autowired
     private MailingService mailingService;
 

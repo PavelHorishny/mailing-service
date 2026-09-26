@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class JpaMailRepository implements MailRepository {
     private final MailEntityMapper mapper;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MailRecord save(MailRecord record) {
         return mapper.toRecord(dao.save(mapper.toEntity(record)));
     }

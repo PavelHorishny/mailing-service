@@ -7,7 +7,7 @@ import com.company.mailing_service.fixtures.MailRecordFixture;
 import com.company.mailing_service.infrastructure.persistence.jpa.MailEntity;
 import com.company.mailing_service.infrastructure.persistence.jpa.MailEntityMapper;
 import com.company.mailing_service.infrastructure.persistence.jpa.MailJpaDao;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MailControllerIT extends ITConfig {
+class MailControllerIT extends PostgresITConfig {
 
     @Autowired
     private MockMvc mockMvc;

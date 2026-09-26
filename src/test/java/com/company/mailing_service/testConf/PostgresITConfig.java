@@ -14,7 +14,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Getter
-public class ITConfig {
+public class PostgresITConfig {
 
   @ServiceConnection
   static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:16-alpine");

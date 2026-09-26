@@ -3,7 +3,7 @@ package com.company.mailing_service.infrastructure.service.smtp;
 import com.company.mailing_service.domain.MailRecord;
 import com.company.mailing_service.domain.MailSender;
 import com.company.mailing_service.fixtures.MailRecordFixture;
-import com.company.mailing_service.testConf.ITConfig;
+import com.company.mailing_service.testConf.PostgresITConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -19,7 +19,7 @@ import java.net.http.HttpResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class SmtpMailSenderFakeSmtpIT extends ITConfig {
+class SmtpMailSenderFakeSmtpIT extends PostgresITConfig {
 
     private static final GenericContainer<?> fakeSmtp =
             new GenericContainer<>("haravich/fake-smtp-server:latest")
